@@ -1,4 +1,4 @@
-package romans
+package roman
 
 import "testing"
 

@@ -1,4 +1,4 @@
-package romans
+package roman
 
 import (
 	"errors"
@@ -32,24 +32,22 @@ func GetKeysSorted(m map[int]string) []int {
 	return keys
 }
 
-func IntToRoman(integer int) (string, error) {
-	if integer < 1 || integer > 3999 {
+func IntToRoman(decimal int) (string, error) {
+	if decimal < 1 || decimal > 3999 {
 		return "", errors.New("number out of range")
 	}
 	var roman string = ""
 
 	var keys = GetKeysSorted(romanInvCharacters)
-	// fmt.Println(keys)
 
-	for integer > 0 {
+	for decimal > 0 {
 		for k := range keys {
-			for integer >= keys[k] {
+			for decimal >= keys[k] {
 				roman += romanInvCharacters[keys[k]]
-				integer -= keys[k]
-				// fmt.Println(keys[k], roman)
+				decimal -= keys[k]
 			}
 		}
-		integer = 0
+		decimal = 0
 	}
 	return roman, nil
 }
