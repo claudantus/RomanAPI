@@ -8,6 +8,13 @@ import (
 	"romanapi/roman"
 
 	"fmt"
+
+	"strconv"
+)
+
+const (
+	MIN_DECIMAL int = 1
+	MAX_DECIMAL int = 3999
 )
 
 func main() {
@@ -26,5 +33,26 @@ func main() {
 }
 
 func homePage(c *gin.Context) {
-	c.String(http.StatusOK, "This is my home page")
+	lower_bound, err := strconv.Atoi(c.DefaultQuery("min", "1"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid parameter format. Must be an integer"})
+		return
+	}
+	upper_bound, err := strconv.Atoi(c.DefaultQuery("max", "10"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid parameter format. Must be an integer"})
+		return
+	}
+
+	if lower_bound > upper_bound {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid parameter format. Min must be higher than or equal to max"})
+		return
+	}
+
+	if lower_bound < MIN_DECIMAL || upper_bound > MAX_DECIMAL {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid parameter format. Values must be between %d and %d", MIN_DECIMAL, MAX_DECIMAL)})
+		return
+	}
+
+	c.String(http.StatusOK, "This is my home page min %d, max %d", lower_bound, upper_bound)
 }
