@@ -31,4 +31,7 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/protobuf v1.34.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	romanapi/roman v0.0.0-00010101000000-000000000000 // indirect
 )
+
+replace romanapi/roman => ./roman
