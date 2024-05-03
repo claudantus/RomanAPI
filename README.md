@@ -18,6 +18,7 @@ Run these in the ./src folder
 
 # Useful Reads
 - https://hackmd.io/@_Cl3aSMeQf2V5wwqxEyfwg/SkR0yzU5s
+- https://blog.logrocket.com/gin-binding-in-go-a-tutorial-with-examples/
 
 # Docker Commands
 ## Build Docker Image

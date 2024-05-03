@@ -5,21 +5,41 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/go-playground/validator/v10"
+
 	"romanapi/roman"
 
-	"fmt"
-
-	"strconv"
-
-	"strings"
+	"errors"
 )
 
-const (
-	// lower boundary of accepted input to get roman number
-	MIN_DECIMAL int = 1
-	// upper boundary of accepted input to get roman number
-	MAX_DECIMAL int = 3999 
-)
+// struct for validation of input for the range of romans
+type rangeParams struct {
+	Min int `form:"min" binding:"required,gte=1,lte=3999,ltefield=Max"`
+	Max int `form:"max" binding:"required,gte=1,lte=3999,gtefield=Min"`
+}
+
+// struct for basic error messages
+type ErrorMsg struct {
+    Field string `json:"field"`
+    Message   string `json:"message"`
+}
+
+// create error message from field validation
+func getErrorMsg(fe validator.FieldError) string {
+    switch fe.Tag() {
+        case "required":
+            return "This field is required"
+        case "lte":
+            return "Should be less than or equal to " + fe.Param()
+        case "gte":
+            return "Should be greater than or equal to " + fe.Param()
+		case "ltefield":
+			return "Should be greater than or equal to " + fe.Param()
+		case "gtefield":
+			return "Should be greater than or equal to " + fe.Param()
+    }
+    return "Unknown error"
+}
 
 func main() {
 	// Create Gin router
@@ -37,54 +57,19 @@ func main() {
 }
 
 func getRomans(c *gin.Context) {
-	// get range for the romans from query parameter range. Default to 1-10
-	romansRange := c.Query("range")
-	romansRangeList := strings.Split(romansRange, "-")
-	if len(romansRangeList) != 2 && romansRange != "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid range for romans. Must be in the format min-max"})
-		return
-	}
+	// input validation using bindings
+	var params rangeParams
 
-	// split
-	// get lower boundary for range of roman numbers from query parameter. Default to 1
-	// convert to integer
-	var lowerBoundStr string
-	var upperBoundStr string
-	if romansRange == "" {
-		lowerBoundStr = c.DefaultQuery("min", "1")
-		upperBoundStr = c.DefaultQuery("max", "10")
-	} else {
-		lowerBoundStr = romansRangeList[0]
-		upperBoundStr = romansRangeList[1]
-	}
-
-	lowerBound, err := strconv.Atoi(lowerBoundStr)
-
-	// if lowerBound cannot be converted to an integer, return status bad request
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid parameter format. Must be an integer"})
-		return
-	}
-
-	// get upper boundary for range of roman numbers from query parameter. Default to 10
-	// convert to integer
-	upperBound, err := strconv.Atoi(upperBoundStr)
-		
-	// if upperBound cannot be converted to an integer, return status bad request
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid parameter format. Must be an integer"})
-		return
-	}
-
-	// if lowerBound is higher than upperBound, return status bad request
-	if lowerBound > upperBound {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid parameter format. Min must be higher than or equal to max"})
-		return
-	}
-
-	// if the lower and upper bound are not in the requested range of 1-3999, return bad request
-	if lowerBound < MIN_DECIMAL || upperBound > MAX_DECIMAL {
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid parameter format. Values must be between %d and %d", MIN_DECIMAL, MAX_DECIMAL)})
+	// return status bad request and collect errors for output
+	if err := c.ShouldBind(&params); err != nil {
+		var ve validator.ValidationErrors
+        if errors.As(err, &ve) {
+            out := make([]ErrorMsg, len(ve))
+            for i, fe := range ve {
+                out[i] = ErrorMsg{fe.Field(), getErrorMsg(fe)}
+            }
+            c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"errors": out})
+		}
 		return
 	}
 
@@ -92,7 +77,7 @@ func getRomans(c *gin.Context) {
 	var listOfRomans []string
 
 	// create list of romans
-	for decimal := lowerBound; decimal < upperBound + 1; decimal++ {
+	for decimal := params.Min; decimal < params.Max + 1; decimal++ {
 		// get roman number from decimal
 		rom, err := roman.IntToRoman(decimal)
 
@@ -102,13 +87,11 @@ func getRomans(c *gin.Context) {
 		}
 	}
 
-	// return status ok and the list of romans
 	c.JSON(http.StatusOK, listOfRomans)
 }
 
 func getHome(c *gin.Context) {
 	c.String(http.StatusOK, "Welcome to the Roman Numeral API.\n" +
-		"Get a range of roman numerals via /romans with the query parameters " +
-		"min for the lower and max for the upper bound \n" +
-		"or with the parameter range in the forman min-max (e.g. 1-10)")
+		"Get a range of roman numerals via /romans with the query parameters \n" +
+		`"min" for the lower and` + "\n" + `"max" for the upper bound`)
 }
