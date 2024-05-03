@@ -31,7 +31,7 @@ var romanInvCharacters = map[int]string{
 	1:    "I",
 }
 
-func IntToRoman(decimal int) (string, error) {
+func DecimalToRoman(decimal int) (string, error) {
 	// return error if the input integer is out of bounds
 	if decimal < LOWER_LIMIT || decimal > UPPER_LIMIT {
 		return "", errors.New("number out of range")

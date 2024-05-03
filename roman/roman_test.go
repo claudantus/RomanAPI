@@ -23,15 +23,15 @@ func TestIntToRoman(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		got, err := IntToRoman(tt.input)
+		got, err := DecimalToRoman(tt.input)
 		if tt.err && err == nil {
-			t.Errorf("IntToRoman(%d): expected error, got nil", tt.input)
+			t.Errorf("DecimalToRoman(%d): expected error, got nil", tt.input)
 		}
 		if !tt.err && err != nil {
-			t.Errorf("IntToRoman(%d): unexpected error: %v", tt.input, err)
+			t.Errorf("DecimalToRoman(%d): unexpected error: %v", tt.input, err)
 		}
 		if got != tt.want {
-			t.Errorf("IntToRoman(%d): got %q, want %q", tt.input, got, tt.want)
+			t.Errorf("DecimalToRoman(%d): got %q, want %q", tt.input, got, tt.want)
 		}
 	}
 }

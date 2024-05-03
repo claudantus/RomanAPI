@@ -62,7 +62,8 @@ func getRomans(c *gin.Context) {
 	var params rangeParams
 
 	// return status bad request and collect errors for output
-	if err := c.ShouldBind(&params); err != nil {
+	// TODO: improve error messages
+	if err := c.Bind(&params); err != nil {
 		var ve validator.ValidationErrors
         if errors.As(err, &ve) {
             out := make([]ErrorMsg, len(ve))
@@ -80,12 +81,19 @@ func getRomans(c *gin.Context) {
 	// create list of romans
 	for decimal := params.Min; decimal < params.Max + 1; decimal++ {
 		// get roman number from decimal
-		rom, err := roman.IntToRoman(decimal)
+		rom, err := roman.DecimalToRoman(decimal)
 
 		// if successful, append the roman to the array
 		if err == nil {
 			listOfRomans = append(listOfRomans, rom)
 		}
+	}
+
+	// 200 if querystring is min=1max=2
+	if len(listOfRomans) == 0 {
+		out := make([]ErrorMsg, 1)
+		out[0] = ErrorMsg{"any", "bad input"}
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"errors": out})
 	}
 
 	c.JSON(http.StatusOK, listOfRomans)
