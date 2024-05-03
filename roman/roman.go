@@ -2,10 +2,19 @@ package roman
 
 import (
 	"errors"
-	"slices"
-	"sort"
 )
 
+const (
+	// lower limit of accepted input
+	LOWER_LIMIT int = 1
+	// upper limit of accepted input
+	UPPER_LIMIT int = 3999
+)
+
+// ordered keys for the roman numerals
+var romanKeys = [13]int{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}
+
+// map for the roman characters
 var romanInvCharacters = map[int]string{
 	1000: "M",
 	900:  "CM",
@@ -22,32 +31,22 @@ var romanInvCharacters = map[int]string{
 	1:    "I",
 }
 
-func GetKeysSorted(m map[int]string) []int {
-	var keys []int
-	for k := range m {
-		keys = append(keys, k)
-	}
-	sort.Ints(keys)
-	slices.Reverse(keys)
-	return keys
-}
-
 func IntToRoman(decimal int) (string, error) {
-	if decimal < 1 || decimal > 3999 {
+	// return error if the input integer is out of bounds
+	if decimal < LOWER_LIMIT || decimal > UPPER_LIMIT {
 		return "", errors.New("number out of range")
 	}
-	var roman string = ""
+	
+	// initialize roman output
+	var roman string
 
-	var keys = GetKeysSorted(romanInvCharacters)
-
-	for decimal > 0 {
-		for k := range keys {
-			for decimal >= keys[k] {
-				roman += romanInvCharacters[keys[k]]
-				decimal -= keys[k]
+	for decimal > 0 { // while remainder from decimal is greater than 0
+		for k := range romanKeys { // go through the sorted keys
+			for decimal >= romanKeys[k] { // while the remainder of the decimal is greater than the key
+				roman += romanInvCharacters[romanKeys[k]] // append the corresponding roman character
+				decimal -= romanKeys[k] // and subtract the key from the remainder (deicmal)
 			}
 		}
-		decimal = 0
 	}
 	return roman, nil
 }

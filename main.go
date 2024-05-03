@@ -13,6 +13,7 @@ import (
 )
 
 // struct for validation of input for the range of romans
+// TODO: make limits configurable
 type rangeParams struct {
 	Min int `form:"min" binding:"required,gte=1,lte=3999,ltefield=Max"`
 	Max int `form:"max" binding:"required,gte=1,lte=3999,gtefield=Min"`
