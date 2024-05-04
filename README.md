@@ -1,8 +1,8 @@
 # RomanAPI
-REST API returning roman numerals in a specified range
+REST API returning Roman numerals in a specified range. Perform a Get on the endpoint localhost:8080/api/v1/romans with query parameters "min" for the lower boundary of the range and "max" for the upper boundary, e.g.
+```curl 127.0.0.1:8080/api/v1/romans?min=1&max=10```
 
 # Useful commands
-Run these in the ./src folder
 
 ## Initialize Module
 ```go mod init $modulename```
