@@ -13,19 +13,8 @@ import (
 // @host localhost:8080
 // @BasePath /
 // @produce json
-// @servers
 
-// HomePageHandler godoc
-// @Summary      Shows welcome page
-// @Description  Displays a short descprition on how to use the API
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int  true  "Account ID"
-// @Success      200  {object}  model.Account
-// @Failure      400  {object}  httputil.HTTPError
-// @Failure      404  {object}  httputil.HTTPError
-// @Failure      500  {object}  httputil.HTTPError
-// @Router       /accounts/{id} [get]
+
 
 func main() {
 	// Create Gin router

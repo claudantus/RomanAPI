@@ -8,20 +8,40 @@ import (
 	"romanapi/roman"
 )
 
-// struct for validation of input for the range of romans
+const (
+	welcomeMessageStr string = "Welcome to the Roman Numeral API.\n" +
+		"Get a range of roman numerals via /api/v1/romans with the query parameters \n" +
+		"\"min\" for the lower and" + "\n" + "\"max\" for the upper bound"
+)
+
+// rangeParams defines the input validation structure for the range of Romans.
 // TODO: make limits configurable
 type rangeParams struct {
 	Min int `form:"min" binding:"required,gte=1,lte=3999,ltefield=Max"`
 	Max int `form:"max" binding:"required,gte=1,lte=3999,gtefield=Min"`
 }
 
-// struct for basic error messages
-type ErrorMsg struct {
-    Field string `json:"field"`
-    Message   string `json:"message"`
+// decimalRoman defines the return type structure.
+type decimalRoman struct {
+	Decimal int `form:"decimal" example:"10"`
+	Roman string `form:"roman" example:"X"`
 }
 
-// utility function to set up the router
+// Define the welcome message structure
+type welcomeMessage struct {
+	Message string `form:"message" example:"Welcome to the Roman Numeral API.\nGet a range of roman numerals via /api/v1/romans with the query parameters \n\"min\" for the lower and\n\"max\" for the upper bound"`
+}
+
+// ErrorMsg defines the structure for basic error messages.
+type ErrorMsg struct {
+    Field string `json:"field" example:"Min"`
+    Message   string `json:"message" example:"This field is required"`
+}
+
+// @title Roman Numeral API
+// @description This API allows users to convert decimal numbers to Roman numerals and retrieve a range of Roman numerals.
+// @BasePath /api/v1
+// TODO: add contact info
 func SetUpRouter() *gin.Engine {
 	router := gin.Default()
 	router.GET("/api/v1/romans", GetRomansHandler)
@@ -29,7 +49,8 @@ func SetUpRouter() *gin.Engine {
 	return router
 }
 
-// create error message from field validation
+// getErrorMsg generates descriptive error messages based on field validation errors.
+// It takes a validator.FieldError as input and returns a string describing the error.
 func getErrorMsg(fe validator.FieldError) string {
     switch fe.Tag() {
         case "required":
@@ -46,6 +67,15 @@ func getErrorMsg(fe validator.FieldError) string {
     return "Unknown error"
 }
 
+// @Summary Returns Roman numerals in a specified range
+// @Description Uses a min and a max parameter to define the range
+// @Accept json
+// @Produce json
+// @Param min query int true "Min" minimum:1 maximum:3999 example:1
+// @Param max query int true "Max" minimum:1 maximum:3999 example:100
+// @Success 200 {array} decimalRoman "Successful operation"
+// @Failure 400 {array} ErrorMsg "Validation error"
+// @Router /romans [get]
 func GetRomansHandler(c *gin.Context) {
 	// input validation using bindings
 	var params rangeParams
@@ -65,8 +95,8 @@ func GetRomansHandler(c *gin.Context) {
 	}
 
 	// initialize array for the list of romans to return
-	var listOfRomans []string
-
+	// var listOfRomans []string
+	var decimalRomans []decimalRoman
 	// create list of romans
 	for decimal := params.Min; decimal < params.Max + 1; decimal++ {
 		// get roman number from decimal
@@ -74,22 +104,26 @@ func GetRomansHandler(c *gin.Context) {
 
 		// if successful, append the roman to the array
 		if err == nil {
-			listOfRomans = append(listOfRomans, rom)
+			decimalRomans = append(decimalRomans, decimalRoman{decimal, rom})
 		}
 	}
 
 	// check if list if empty
-	if len(listOfRomans) == 0 {
+	if len(decimalRomans) == 0 {
 		out := make([]ErrorMsg, 1)
 		out[0] = ErrorMsg{"any", "bad input"}
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"errors": out})
 	}
 
-	c.JSON(http.StatusOK, listOfRomans)
+	c.JSON(http.StatusOK, decimalRomans)
 }
 
+// @Summary Shows welcome page
+// @Description Displays a short description of how to use the API
+// @Accept */*
+// @Produce json
+// @Success 200 {object} welcomeMessage "Welcome message" 
+// @Router / [get]
 func HomePageHandler(c *gin.Context) {
-	c.String(http.StatusOK, "Welcome to the Roman Numeral API.\n" +
-		"Get a range of roman numerals via /romans with the query parameters \n" +
-		`"min" for the lower and` + "\n" + `"max" for the upper bound`)
+	c.JSON(http.StatusOK, welcomeMessage{welcomeMessageStr})
 }

@@ -1,11 +1,83 @@
 basePath: /
+definitions:
+  api.ErrorMsg:
+    properties:
+      field:
+        example: Min
+        type: string
+      message:
+        example: This field is required
+        type: string
+    type: object
+  api.decimalRoman:
+    properties:
+      decimal:
+        example: 10
+        type: integer
+      roman:
+        example: X
+        type: string
+    type: object
+  api.welcomeMessage:
+    properties:
+      message:
+        example: "Welcome to the Roman Numeral API.\nGet a range of roman numerals
+          via /api/v1/romans with the query parameters \n\"min\" for the lower and\n\"max\"
+          for the upper bound"
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
   description: Returns roman numerals in a range specified by query parameters
   title: Roman Numeral API
   version: "1.0"
-paths: {}
+paths:
+  /:
+    get:
+      consumes:
+      - '*/*'
+      description: Displays a short description of how to use the API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Welcome message
+          schema:
+            $ref: '#/definitions/api.welcomeMessage'
+      summary: Shows welcome page
+  /romans:
+    get:
+      consumes:
+      - application/json
+      description: Uses a min and a max parameter to define the range
+      parameters:
+      - description: Min
+        in: query
+        name: min
+        required: true
+        type: integer
+      - description: Max
+        in: query
+        name: max
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/api.decimalRoman'
+            type: array
+        "400":
+          description: Validation error
+          schema:
+            items:
+              $ref: '#/definitions/api.ErrorMsg'
+            type: array
+      summary: Returns Roman numerals in a specified range
 produces:
 - application/json
 swagger: "2.0"
