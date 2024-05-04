@@ -21,6 +21,14 @@ type ErrorMsg struct {
     Message   string `json:"message"`
 }
 
+// utility function to set up the router
+func SetUpRouter() *gin.Engine {
+	router := gin.Default()
+	router.GET("/api/v1/romans", GetRomansHandler)
+	router.GET("/", HomePageHandler)
+	return router
+}
+
 // create error message from field validation
 func getErrorMsg(fe validator.FieldError) string {
     switch fe.Tag() {
@@ -70,7 +78,7 @@ func GetRomansHandler(c *gin.Context) {
 		}
 	}
 
-	// 200 if querystring is min=1max=2
+	// check if list if empty
 	if len(listOfRomans) == 0 {
 		out := make([]ErrorMsg, 1)
 		out[0] = ErrorMsg{"any", "bad input"}

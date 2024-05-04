@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"romanapi/api"
 )
 
@@ -30,11 +29,7 @@ import (
 
 func main() {
 	// Create Gin router
-	router := gin.Default()
-
-	// Register Routes
-	router.GET("/", api.HomePageHandler)
-	router.GET("/api/v1/romans", api.GetRomansHandler)
+	router := api.SetUpRouter()
 
 	// Start the server
 	// Don't use localhost server address within a Docker container

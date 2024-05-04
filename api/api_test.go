@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
+	// "github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -20,8 +20,8 @@ func TestHomePageHandler(t *testing.T) {
 		{"", http.StatusOK, ""}, 			 		// get home page
 		{"something", http.StatusNotFound, ""}, 	// get not existing endpoint
 	}
-	r := gin.Default()	
-	r.GET("/", HomePageHandler)
+	
+	r := SetUpRouter()
 
 	for _, tt := range tests {
 		req, _ := http.NewRequest("GET", "/" + tt.input, nil)
@@ -49,8 +49,7 @@ func TestGetRomansHandler(t *testing.T) {
 		{"?mini=1&max=a", http.StatusBadRequest, ""}, 		// wrong parameter name
 	}
 
-	r := gin.Default()	
-	r.GET("/api/v1/romans", GetRomansHandler)
+	r := SetUpRouter()
 
 	for _, tt := range tests {
 		req, _ := http.NewRequest("GET", "/api/v1/romans" + tt.input, nil)

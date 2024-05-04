@@ -3,7 +3,6 @@ module main
 go 1.22.2
 
 require (
-	github.com/gin-gonic/gin v1.9.1
 	github.com/swaggo/swag v1.16.3
 	romanapi/api v0.0.0-00010101000000-000000000000
 )
@@ -16,6 +15,7 @@ require (
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
+	github.com/gin-gonic/gin v1.9.1 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
 	github.com/go-openapi/jsonreference v0.21.0 // indirect
 	github.com/go-openapi/spec v0.21.0 // indirect
