@@ -8,6 +8,9 @@ import (
 	"testing"
 )
 
+// TODO: decide whether to combine all handlers in one test function or leave them separated for readability
+// TODO: test the content such as roman numerals or error messages
+
 func TestHomePageHandler(t *testing.T) {
 	tests := []struct {
 		input string
@@ -16,7 +19,6 @@ func TestHomePageHandler(t *testing.T) {
 	}{
 		{"", http.StatusOK, ""}, 			 		// get home page
 		{"something", http.StatusNotFound, ""}, 	// get not existing endpoint
-
 	}
 	r := gin.Default()	
 	r.GET("/", HomePageHandler)
@@ -42,6 +44,8 @@ func TestGetRomansHandler(t *testing.T) {
 		{"?min=3999&max=4000", http.StatusBadRequest, ""}, 	// max out of bounds
 		{"?min=a&max=1", http.StatusBadRequest, ""}, 		// min wrong type
 		{"?min=1&max=a", http.StatusBadRequest, ""}, 		// max wrong type
+		{"?max=2", http.StatusBadRequest, ""}, 				// min field missing
+		{"?min=1", http.StatusBadRequest, ""}, 				// max field missing
 		{"?mini=1&max=a", http.StatusBadRequest, ""}, 		// wrong parameter name
 	}
 
@@ -53,6 +57,5 @@ func TestGetRomansHandler(t *testing.T) {
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, req)
 		assert.Equal(t, tt.wantCode, w.Code)
-		
 	}
 }
