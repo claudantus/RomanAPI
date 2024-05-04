@@ -1,4 +1,11 @@
+basePath: /
+host: localhost:8080
 info:
   contact: {}
+  description: Returns roman numerals in a range specified by query parameters
+  title: Roman Numeral API
+  version: "0.1"
 paths: {}
+produces:
+- application/json
 swagger: "2.0"
