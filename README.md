@@ -24,6 +24,7 @@ Run these in the ./src folder
 - https://blog.logrocket.com/gin-binding-in-go-a-tutorial-with-examples/
 - https://github.com/swaggo/gin-swagger?tab=readme-ov-file
 - https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format
+- https://cloudvesna.com/developing-and-testing-rest-apis-with-golang-gin-and-github-actions-75996b3e264a
 
 # Docker Commands
 ## Build Docker Image
