@@ -13,7 +13,7 @@ import (
     "github.com/testcontainers/testcontainers-go/wait"
 )
 
-// Define your test suite struct
+// Define the test suite struct
 type IntegrationTestSuite struct {
     suite.Suite
     container testcontainers.Container
@@ -23,7 +23,7 @@ type IntegrationTestSuite struct {
 func (suite *IntegrationTestSuite) SetupSuite() {
     ctx := context.Background()
 
-    // Define the container with your API image
+    // Define the container with the API image
     req := testcontainers.ContainerRequest{
         Image:        "romanapi",
         ExposedPorts: []string{"8080/tcp"},
@@ -46,8 +46,26 @@ func (suite *IntegrationTestSuite) TearDownSuite() {
     assert.NoError(suite.T(), err)
 }
 
+// TODO: Test response messages in detail
+// TODO: Copy paste from api_test.go... Import this.
 // TestAPIIntegration tests the API integration
 func (suite *IntegrationTestSuite) TestAPIIntegration() {
+    tests := []struct {
+		input string
+		wantCode int
+		wantMessage string
+	}{
+        {"", http.StatusBadRequest, ""}, 			 		// no query parameters
+		{"?min=1&max=2", http.StatusOK, ""}, 		        // good parameters
+		{"?min=2&max=1", http.StatusBadRequest, ""}, 		// min larger than max
+		{"?min=0&max=1", http.StatusBadRequest, ""}, 		// min out of bounds
+		{"?min=3999&max=4000", http.StatusBadRequest, ""}, 	// max out of bounds
+		{"?min=a&max=1", http.StatusBadRequest, ""}, 		// min wrong type
+		{"?min=1&max=a", http.StatusBadRequest, ""}, 		// max wrong type
+		{"?max=2", http.StatusBadRequest, ""}, 				// min field missing
+		{"?min=1", http.StatusBadRequest, ""}, 				// max field missing
+		{"?mini=1&max=1", http.StatusBadRequest, ""}, 		// wrong parameter name
+    }
     ctx := context.Background()
 
     // Get the container's host and port
@@ -55,11 +73,13 @@ func (suite *IntegrationTestSuite) TestAPIIntegration() {
     assert.NoError(suite.T(), err)
 
     // Make HTTP request to the API
-    resp, err := http.Get(fmt.Sprintf("http://%s/api/v1/romans?min=1&max=10", endpoint))
-    assert.NoError(suite.T(), err)
+    for _, tt := range tests {
+        resp, err := http.Get(fmt.Sprintf("http://%s/api/v1/romans" + tt.input, endpoint))
+        assert.NoError(suite.T(), err)
 
-    // Ensure status code is 200 OK
-    assert.Equal(suite.T(), http.StatusOK, resp.StatusCode)
+        // Ensure status code is OK
+        assert.Equal(suite.T(), tt.wantCode, resp.StatusCode)
+    }
 }
 
 // Run the test suite
