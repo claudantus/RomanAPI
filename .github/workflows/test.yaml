@@ -27,7 +27,13 @@ jobs:
       - name: Run Tests and Save Results
         run: |
           export GIN_MODE=release
-          go test -v ./... | tee test_results.txt
+          cd ./roman
+          go test -v . | tee ../test_results.txt
+          cd ../api
+          go test -v . | tee ../test_results.txt
+          cd ../integration
+          go test -v . | tee ../test_results.txt
+          cd ..
         continue-on-error: true
 
       - name: Upload Test Results
