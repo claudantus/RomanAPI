@@ -36,7 +36,7 @@ The inputs are validated using data models, and simple unit tests are implemente
 
 ## API Specifications
 
-The API specifications (Swagger 2.0 / OpenAPI) are created, using General API annotations. https://github.com/swaggo/swag/blob/master/README.md#general-api-info
+The API specifications (Swagger 2.0 / OpenAPI) are created, using General API annotations. See [swaggo](https://github.com/swaggo/swag/blob/master/README.md#general-api-info)
 
 The specifications can be created, by running 
 ```
@@ -44,7 +44,7 @@ go install github.com/swaggo/swag/cmd/swag@latest
 swag init
 ```
 
-The docs can be viewed at http://127.0.0.1:8080/api/v1/docs/index.html, following the instructions on [gin-swagger](https://github.com/swaggo/gin-swagger)..
+The docs can be viewed at http://127.0.0.1:8080/api/v1/docs/index.html, following the instructions on [gin-swagger](https://github.com/swaggo/gin-swagger).
 
 
 
@@ -101,7 +101,7 @@ Improve API documentation, especially error message documentation and parameter 
 
 # Integration Testing
 
-Integration tests are implemented using the Go Testify Suite combined with Go testcontainers [testcontainers-go]https://pkg.go.dev/github.com/testcontainers/testcontainers-go
+Integration tests are implemented using the Go Testify Suite combined with Go testcontainers [testcontainers-go](https://pkg.go.dev/github.com/testcontainers/testcontainers-go)
 
 
 
@@ -161,4 +161,4 @@ go mod tidy
 - [Gin Binding in Go: A Tutorial with Examples](https://blog.logrocket.com/gin-binding-in-go-a-tutorial-with-examples/)
 - [gin-swagger Readme](https://github.com/swaggo/gin-swagger?tab=readme-ov-file)
 - [Swagger: Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format)
-- [Developing and Testing REST APIs with Golang, Gin, and GitHub Actions](https://cloudvesna.com/
+- [Developing and Testing REST APIs with Golang, Gin, and GitHub Actions](https://cloudvesna.com/developing-and-testing-rest-apis-with-golang-gin-and-github-actions-75996b3e264a)
