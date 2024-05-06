@@ -6,7 +6,8 @@ definitions:
         example: Min
         type: string
       message:
-        example: This field is required
+        example: This field is required and needs to be an integer in the range of
+          1-3999
         type: string
     type: object
   api.decimalRoman:

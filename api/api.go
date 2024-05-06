@@ -38,7 +38,7 @@ type welcomeMessage struct {
 // ErrorMsg defines the structure for basic error messages.
 type ErrorMsg struct {
     Field string `json:"field" example:"Min"`
-    Message   string `json:"message" example:"This field is required"`
+    Message   string `json:"message" example:"This field is required and needs to be an integer in the range of 1-3999"`
 }
 
 // @title Roman Numeral API
@@ -57,10 +57,11 @@ func SetUpRouter() *gin.Engine {
 
 // getErrorMsg generates descriptive error messages based on field validation errors.
 // It takes a validator.FieldError as input and returns a string describing the error.
+// TODO: separate the cases of required and param=0. However the Gin validators seem to see param=0 as a missing parameter.
 func getErrorMsg(fe validator.FieldError) string {
     switch fe.Tag() {
         case "required":
-            return "This field is required"
+            return "This field is required and needs to be an integer in the range of 1-3999"
         case "lte":
             return "Should be less than or equal to " + fe.Param()
         case "gte":

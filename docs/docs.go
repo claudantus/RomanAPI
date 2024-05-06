@@ -97,7 +97,7 @@ const docTemplate = `{
                 },
                 "message": {
                     "type": "string",
-                    "example": "This field is required"
+                    "example": "This field is required and needs to be an integer in the range of 1-3999"
                 }
             }
         },
