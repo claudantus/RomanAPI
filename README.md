@@ -60,10 +60,12 @@ Choose a hosting provider that meets your requirements in terms of scalability, 
 
 Provision servers or serverless resources to host your API. Configure networking, firewalls, load balancers, and other necessary infrastructure components to ensure high availability and security.
 
-## Deploying the API and CI/CD
+## Deployment: CI/CD
 
-Implement a deployment pipeline (CI/CD) to automate deployment. Currently, a simple CI pipeline runs unit tests and integration tests, but deployment needs to be set up.
-
+To achieve production readiness, it's crucial to establish a robust deployment pipeline (CI/CD) that automates the deployment process. Currently, the CI pipeline primarily focuses on running unit tests and integration tests. In a productive environment there's a need to extend it to include deployment procedures. The steps consist of
+- Expanding the existing CI/CD pipeline to incorporate deployment automation.
+- Set up multiple environments like Development, Staging, and Production. Each environment serves a distinct purpose, facilitating proper testing, validation, and deployment of changes.
+-  Implement a mechanism to manage environment configurations effectively. This involves maintaining separate configuration files or using environment variables to customize settings for each environment.
 
 ## Configuring DNS
 
