@@ -66,7 +66,7 @@ func getErrorMsg(fe validator.FieldError) string {
         case "gte":
             return "Should be greater than or equal to " + fe.Param()
 		case "ltefield":
-			return "Should be greater than or equal to " + fe.Param()
+			return "Should be less than or equal to " + fe.Param()
 		case "gtefield":
 			return "Should be greater than or equal to " + fe.Param()
     }
