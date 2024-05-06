@@ -2,10 +2,13 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	"net/http"
 	"github.com/go-playground/validator/v10"
 	"errors"
 	"romanapi/roman"
+	"romanapi/docs"
 )
 
 const (
@@ -43,9 +46,12 @@ type ErrorMsg struct {
 // @BasePath /api/v1
 // TODO: add contact info
 func SetUpRouter() *gin.Engine {
+	docs.SwaggerInfo.BasePath = "/api/v1"
 	router := gin.Default()
 	router.GET("/api/v1/romans", GetRomansHandler)
 	router.GET("/", HomePageHandler)
+	// use ginSwagger middleware to serve the API docs
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return router
 }
 

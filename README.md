@@ -4,10 +4,10 @@ REST API returning Roman numerals in a specified range. Perform a Get on the end
 
 # Description
 ## Roman Numerals 
-The module romanapi/roman contains functions to convert a decimal number, to a Roman numeral, e.g., 4 to 'IV'. The accepted range of decimals is set to 1-3999. The module contains a unit test, testing mostly edge cases.
+The module romanapi/roman contains functions to convert a decimal number, to a Roman numeral, e.g., 4 to 'IV'. The accepted range of decimals is set to 1-3999. The module contains a unit test, testing mostly edge cases. In principle, I could also have imported an existing package such as https://pkg.go.dev/github.com/brandenc40/romannumeral.
 
 ### Room for improvement
-Instead of restricting the service only to Roman numerals, one could think of generalizing these. A simple extension would be the creation of English spelled numbers from decimals, e.g., 123 to 'one hundred and twenty three'. In order to successfully reach this, the module should be configurable, were a mapping table and the limits for the input can be given. Using the example before, this could look similar to the table below.
+Instead of restricting the service only to Roman numerals, one could think of generalizing these. A simple extension would be the creation of English spelled numbers from decimals, e.g., 123 to 'one hundred and twenty three'. In order to successfully reach this, the module should be configurable, were a mapping table and the limits for the input can be given. Addintionally, a few minor adaptations in the code would be required. Using the example before, this could look similar to the table below.
 ```
 {
     1: 'one',
@@ -29,7 +29,7 @@ It uses the standard configurations, localhost:8080, and served two endpoints:
 
 The inputs are validated using data models.
 
-### API Specifications
+## API Specifications
 The API specifications (Swagger 2.0 / OpenAPI) are created, using General API annotations. https://github.com/swaggo/swag/blob/master/README.md#general-api-info
 
 The specifications can be created, by running 
@@ -37,6 +37,8 @@ The specifications can be created, by running
 go install github.com/swaggo/swag/cmd/swag@latest
 swag init
 ```
+
+The docs can be viewed at http://127.0.0.1:8080/docs/index.html, following https://github.com/swaggo/gin-swagger.
 
 
 
