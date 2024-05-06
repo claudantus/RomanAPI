@@ -4,6 +4,7 @@ import (
 	"errors"
 )
 
+// TODO: Import these configurations from a config file.
 const (
 	// lower limit of accepted input
 	LOWER_LIMIT int = 1
@@ -31,6 +32,7 @@ var romanInvCharacters = map[int]string{
 	1:    "I",
 }
 
+// DecimalToRoman converts a decimal input into a Roman numeral (accepted range is 1-3999)
 func DecimalToRoman(decimal int) (string, error) {
 	// return error if the input integer is out of bounds
 	if decimal < LOWER_LIMIT || decimal > UPPER_LIMIT {

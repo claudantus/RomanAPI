@@ -30,7 +30,7 @@ type decimalRoman struct {
 	Roman string `form:"roman" example:"X"`
 }
 
-// Define the welcome message structure
+// welcomeMessage define the welcome message structure.
 type welcomeMessage struct {
 	Message string `form:"message" example:"Welcome to the Roman Numeral API.\nGet a range of roman numerals via /api/v1/romans with the query parameters \n\"min\" for the lower and\n\"max\" for the upper bound"`
 }
@@ -101,7 +101,6 @@ func GetRomansHandler(c *gin.Context) {
 	}
 
 	// initialize array for the list of romans to return
-	// var listOfRomans []string
 	var decimalRomans []decimalRoman
 	// create list of romans
 	for decimal := params.Min; decimal < params.Max + 1; decimal++ {

@@ -1,7 +1,6 @@
 package api
 
 import (
-	// "github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -52,6 +51,7 @@ func TestGetRomansHandler(t *testing.T) {
 
 	r := SetUpRouter()
 
+	// perform all tests as defined above
 	for _, tt := range tests {
 		req, _ := http.NewRequest("GET", "/api/v1/romans" + tt.input, nil)
 		w := httptest.NewRecorder()
