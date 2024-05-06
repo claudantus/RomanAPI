@@ -101,7 +101,7 @@ Improve API documentation, especially error message documentation and parameter 
 
 # Integration Testing
 
-Integration tests are implemented using the Go Testify Suite combined with Go testcontainers [testcontainers-go](https://pkg.go.dev/github.com/testcontainers/testcontainers-go)
+Integration tests are implemented using the Go Testify Suite combined with Go testcontainers [testcontainers-go](https://pkg.go.dev/github.com/testcontainers/testcontainers-go). Make sure to build the docker container before running these tests.
 
 
 
