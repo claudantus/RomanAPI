@@ -51,7 +51,7 @@ func SetUpRouter() *gin.Engine {
 	router.GET("/api/v1/romans", GetRomansHandler)
 	router.GET("/", HomePageHandler)
 	// use ginSwagger middleware to serve the API docs
-	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("api/v1/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return router
 }
 
