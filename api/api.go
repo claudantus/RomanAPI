@@ -18,7 +18,7 @@ const (
 )
 
 // rangeParams defines the input validation structure for the range of Romans.
-// TODO: make limits configurable
+// TODO: make limits configurable. This can be reached by defining a custom validator function.
 type rangeParams struct {
 	Min int `form:"min" binding:"required,gte=1,lte=3999,ltefield=Max"`
 	Max int `form:"max" binding:"required,gte=1,lte=3999,gtefield=Min"`
