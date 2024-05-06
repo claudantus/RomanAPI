@@ -44,7 +44,7 @@ func DecimalToRoman(decimal int) (string, error) {
 		for k := range romanKeys { // go through the sorted keys
 			for decimal >= romanKeys[k] { // while the remainder of the decimal is greater than the key
 				roman += romanInvCharacters[romanKeys[k]] // append the corresponding roman character
-				decimal -= romanKeys[k] // and subtract the key from the remainder (deicmal)
+				decimal -= romanKeys[k] // and subtract the key from the remainder (decimal)
 			}
 		}
 	}
