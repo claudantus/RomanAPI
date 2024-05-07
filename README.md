@@ -83,7 +83,7 @@ Enhance error handling to provide more informative and user-friendly error messa
 
 ## Security
 
-Improve input validation mechanisms and implement authentication (e.g., JWT) for a production-ready API. Consider authorization logic for resource access control.
+Improve input validation mechanisms and implement authentication (e.g., JWT) for a production-ready API. Consider authorization logic for resource access control. In the case of this simple API this would probably be a binary access to all or none resources, or even no restrictions at all. If there were configuration tables or data to be sent via PUT/POST, the privileges could be split into the roles of a consumer (GET only) a developer (GET and restricted PUT/POST) and an admin (access to all).
 
 ## Monitoring and Alerting
 
@@ -95,7 +95,7 @@ Implement measures such as rate limiting, traffic filtering, and utilization of 
 
 ## Compliance and Regulations
 
-In a production environment, ensuring compliance with relevant regulations and standards is required. In this case, however, the data is of a very insensitive nature.
+In a production environment, ensuring compliance with relevant regulations and standards is required. In this case, however, the data is of a very insensitive nature, which would simplify this part.
 
 ## Documentation
 
